@@ -2,7 +2,8 @@ package pcl.common.asm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 
@@ -24,9 +25,9 @@ public class PCLCoreTransformer implements IClassTransformer {
 	public static boolean ASM_SUCCESS = false;
 
 	/**
-	 * Initializes the core transformer. This notifies that hooking at runtime was a success,
-	 * and sets up all transformers registered in the {@link PCLCoreTransformerPlugin}
-	 * instance.
+	 * Initializes the core transformer. This notifies that hooking at runtime
+	 * was a success, and sets up all transformers registered in the
+	 * {@link PCLCoreTransformerPlugin} instance.
 	 */
 	public PCLCoreTransformer() {
 		PCLCoreTransformer.ASM_SUCCESS = true;
@@ -36,17 +37,16 @@ public class PCLCoreTransformer implements IClassTransformer {
 		for (String transformer : tnames)
 			try {
 				transformers.add((IClassTransformer) Class.forName(transformer).newInstance());
-				PCLCoreTransformerPlugin.getLogger().log(Level.FINE, "Instantiated transformer " + transformer);
+				PCLCoreTransformerPlugin.getLogger().log(Level.DEBUG, "Instantiated transformer " + transformer);
 			} catch (Throwable e) {
-				PCLCoreTransformerPlugin.getLogger().log(Level.WARNING,
-						"Could not instantiate transformer " + transformer);
+				PCLCoreTransformerPlugin.getLogger().log(Level.WARN, "Could not instantiate transformer " + transformer);
 				e.printStackTrace();
 			}
 	}
 
 	/**
-	 * Called when Forge is passing a class for transformation to us. We should pass this
-	 * through all our children, then return the result.
+	 * Called when Forge is passing a class for transformation to us. We should
+	 * pass this through all our children, then return the result.
 	 */
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes) {
@@ -57,11 +57,9 @@ public class PCLCoreTransformer implements IClassTransformer {
 			try {
 				bytes = transformer.transform(name, transformedName, bytes);
 				if (bytes == null)
-					PCLCoreTransformerPlugin.getLogger().log(Level.SEVERE,
-							"Transformer " + transformer + " corrupted class " + name);
+					PCLCoreTransformerPlugin.getLogger().log(Level.FATAL, "Transformer " + transformer + " corrupted class " + name);
 			} catch (Throwable e) {
-				PCLCoreTransformerPlugin.getLogger().log(Level.WARNING,
-						"Could not transform class " + name + " using " + transformer);
+				PCLCoreTransformerPlugin.getLogger().log(Level.WARN, "Could not transform class " + name + " using " + transformer);
 				e.printStackTrace();
 			}
 		return bytes;

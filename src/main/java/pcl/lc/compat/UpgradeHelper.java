@@ -2,7 +2,8 @@ package pcl.lc.compat;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -53,12 +54,9 @@ public class UpgradeHelper {
 
 	static {
 		upgrades.add(new UpgradeMapping("sgBaseBlock", new ItemStack(LanteaCraft.Blocks.stargateBaseBlock, 1), false));
-		upgrades.add(new UpgradeMapping("sgRingBlock", new ItemStack(LanteaCraft.Blocks.stargateRingBlock, 1, 0),
-				false, 0));
-		upgrades.add(new UpgradeMapping("sgRingBlock", new ItemStack(LanteaCraft.Blocks.stargateRingBlock, 1, 1),
-				false, 1));
-		upgrades.add(new UpgradeMapping("sgControllerBlock", new ItemStack(LanteaCraft.Blocks.stargateControllerBlock,
-				1), false));
+		upgrades.add(new UpgradeMapping("sgRingBlock", new ItemStack(LanteaCraft.Blocks.stargateRingBlock, 1, 0), false, 0));
+		upgrades.add(new UpgradeMapping("sgRingBlock", new ItemStack(LanteaCraft.Blocks.stargateRingBlock, 1, 1), false, 1));
+		upgrades.add(new UpgradeMapping("sgControllerBlock", new ItemStack(LanteaCraft.Blocks.stargateControllerBlock, 1), false));
 		upgrades.add(new UpgradeMapping("naquadahBlock", new ItemStack(LanteaCraft.Blocks.naquadahBlock, 1), false));
 		upgrades.add(new UpgradeMapping("naquadahOre", new ItemStack(LanteaCraft.Blocks.naquadahOre, 1), false));
 
@@ -106,16 +104,12 @@ public class UpgradeHelper {
 								createBlockConversionRecipe(mapping, foreignBlock);
 						}
 					} catch (ClassCastException cast) {
-						LanteaCraft.getLogger()
-								.log(Level.WARNING,
-										"Failed to cast block field " + mapping.getSourceName()
-												+ " to Block typeof, ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN,
+								"Failed to cast block field " + mapping.getSourceName() + " to Block typeof, ignoring!");
 					} catch (NoSuchFieldException field) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Failed to find block field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Failed to find block field " + mapping.getSourceName() + ", ignoring!");
 					} catch (IllegalAccessException illegal) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Could not access block field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Could not access block field " + mapping.getSourceName() + ", ignoring!");
 					}
 
 				if (mapping.isItemSource())
@@ -127,18 +121,16 @@ public class UpgradeHelper {
 								createItemConversionRecipe(mapping, foreignItem);
 						}
 					} catch (ClassCastException cast) {
-						LanteaCraft.getLogger().log(Level.WARNING,
+						LanteaCraft.getLogger().log(Level.WARN,
 								"Failed to cast item field " + mapping.getSourceName() + " to Item typeof, ignoring!");
 					} catch (NoSuchFieldException field) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Failed to find item field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Failed to find item field " + mapping.getSourceName() + ", ignoring!");
 					} catch (IllegalAccessException illegal) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Could not access item field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Could not access item field " + mapping.getSourceName() + ", ignoring!");
 					}
 			}
 		} catch (ClassNotFoundException notfound) {
-			LanteaCraft.getLogger().log(Level.WARNING, "Could not locate a class required for upgrade!", notfound);
+			LanteaCraft.getLogger().log(Level.WARN, "Could not locate a class required for upgrade!", notfound);
 		}
 	}
 
@@ -157,16 +149,12 @@ public class UpgradeHelper {
 								createBlockConversionRecipe(mapping, foreignBlock);
 						}
 					} catch (ClassCastException cast) {
-						LanteaCraft.getLogger()
-								.log(Level.WARNING,
-										"Failed to cast block field " + mapping.getSourceName()
-												+ " to Block typeof, ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN,
+								"Failed to cast block field " + mapping.getSourceName() + " to Block typeof, ignoring!");
 					} catch (NoSuchFieldException field) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Failed to find block field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Failed to find block field " + mapping.getSourceName() + ", ignoring!");
 					} catch (IllegalAccessException illegal) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Could not access block field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Could not access block field " + mapping.getSourceName() + ", ignoring!");
 					}
 
 				if (mapping.isItemSource())
@@ -178,19 +166,17 @@ public class UpgradeHelper {
 								createItemConversionRecipe(mapping, foreignItem);
 						}
 					} catch (ClassCastException cast) {
-						LanteaCraft.getLogger().log(Level.WARNING,
+						LanteaCraft.getLogger().log(Level.WARN,
 								"Failed to cast item field " + mapping.getSourceName() + " to Item typeof, ignoring!");
 					} catch (NoSuchFieldException field) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Failed to find item field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Failed to find item field " + mapping.getSourceName() + ", ignoring!");
 					} catch (IllegalAccessException illegal) {
-						LanteaCraft.getLogger().log(Level.WARNING,
-								"Could not access item field " + mapping.getSourceName() + ", ignoring!");
+						LanteaCraft.getLogger().log(Level.WARN, "Could not access item field " + mapping.getSourceName() + ", ignoring!");
 					}
 			}
 
 		} catch (ClassNotFoundException notfound) {
-			LanteaCraft.getLogger().log(Level.WARNING, "Could not locate a class required for upgrade!", notfound);
+			LanteaCraft.getLogger().log(Level.WARN, "Could not locate a class required for upgrade!", notfound);
 		}
 	}
 
@@ -200,8 +186,7 @@ public class UpgradeHelper {
 				"Adding block conversion {foreign: " + foreign.getClass().getCanonicalName() + "; local: "
 						+ mapping.getResultStack().toString() + "}.");
 		if (mapping.getInputMetadata() != -1)
-			GameRegistry.addShapelessRecipe(mapping.getResultStack(),
-					new ItemStack(foreign, 1, mapping.getInputMetadata()));
+			GameRegistry.addShapelessRecipe(mapping.getResultStack(), new ItemStack(foreign, 1, mapping.getInputMetadata()));
 		else
 			GameRegistry.addShapelessRecipe(mapping.getResultStack(), new ItemStack(foreign, 1));
 	}
@@ -212,8 +197,7 @@ public class UpgradeHelper {
 				"Adding item conversion {foreign: " + foreign.getClass().getCanonicalName() + "; local: "
 						+ mapping.getResultStack().toString() + "}.");
 		if (mapping.getInputMetadata() != -1)
-			GameRegistry.addShapelessRecipe(mapping.getResultStack(),
-					new ItemStack(foreign, 1, mapping.getInputMetadata()));
+			GameRegistry.addShapelessRecipe(mapping.getResultStack(), new ItemStack(foreign, 1, mapping.getInputMetadata()));
 		else
 			GameRegistry.addShapelessRecipe(mapping.getResultStack(), new ItemStack(foreign, 1));
 	}

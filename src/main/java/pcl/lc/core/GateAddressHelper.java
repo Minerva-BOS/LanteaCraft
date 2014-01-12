@@ -80,7 +80,7 @@ public class GateAddressHelper {
 		if (world != null) {
 			Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
 			if (chunk != null)
-				for (Object te : chunk.chunkTileEntityMap.values())
+				for (Object te : chunk.field_150816_i.values())
 					if (te instanceof TileEntityStargateBase)
 						return (TileEntityStargateBase) te;
 		}

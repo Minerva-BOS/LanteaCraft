@@ -32,8 +32,8 @@ public class StargatePart extends MultiblockPart {
 		if (!allowScanning)
 			return null;
 		AxisAlignedBB bounds = AxisAlignedBB.getBoundingBox(-5, -5, -5, 5, 5, 5);
-		TileEntity entity = ScanningHelper.findNearestTileEntityOf(host.worldObj, TileEntityStargateBase.class,
-				host.xCoord, host.yCoord, host.zCoord, bounds);
+		TileEntity entity = ScanningHelper.findNearestTileEntityOf(host.field_145850_b, TileEntityStargateBase.class, host.field_145851_c,
+				host.field_145848_d, host.field_145849_e, bounds);
 		if (entity == null)
 			return null;
 		TileEntityStargateBase baseObj = (TileEntityStargateBase) entity;
@@ -69,7 +69,7 @@ public class StargatePart extends MultiblockPart {
 
 	@Override
 	public Vector3 getVectorLoc() {
-		return new Vector3(host.xCoord, host.yCoord, host.zCoord);
+		return new Vector3(host.field_145851_c, host.field_145848_d, host.field_145849_e);
 	}
 
 }

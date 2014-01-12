@@ -14,18 +14,17 @@ public class TileEntityStargateControllerRenderer extends TileEntitySpecialRende
 	private float scale = 1;
 
 	public TileEntityStargateControllerRenderer() {
-		theTexture = LanteaCraft.getResource("textures/models/dhd_off_" + LanteaCraft.getProxy().getRenderMode()
-				+ ".png");
+		theTexture = LanteaCraft.getResource("textures/models/dhd_off_" + LanteaCraft.getProxy().getRenderMode() + ".png");
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float f) {
+	public void func_147500_a(TileEntity tileEntity, double x, double y, double z, float f) {
 		if (LanteaCraft.getProxy().isUsingModels()) {
 			GL11.glPushMatrix();
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glScalef(scale, scale, scale);
 			GL11.glTranslated(x, y, z);
-			int dir = tileEntity.getBlockMetadata();
+			int dir = tileEntity.func_145832_p();
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			if (dir == 1 || dir == 3)
 				GL11.glRotatef(dir * 90F, 0F, 1F, 0F);

@@ -12,28 +12,28 @@ public class TileEntityStargateRing extends GenericTileEntity {
 
 	@Override
 	public boolean canUpdate() {
-		return (thisPart.getType() == null && worldObj != null && !worldObj.isRemote);
+		return (thisPart.getType() == null && field_145850_b != null && !field_145850_b.isRemote);
 	}
 
 	@Override
-	public void updateEntity() {
+	public void func_145845_h() {
 		if (thisPart.getType() == null)
 			flagDirty();
 	}
 
 	public void hostBlockPlaced() {
-		if (!worldObj.isRemote)
+		if (!field_145850_b.isRemote)
 			flagDirty();
 	}
 
 	public void hostBlockDestroyed() {
-		if (!worldObj.isRemote)
+		if (!field_145850_b.isRemote)
 			flagDirty();
 	}
 
 	public void flagDirty() {
 		if (thisPart.getType() == null) {
-			int ord = (worldObj.getBlockMetadata(xCoord, yCoord, zCoord) & 0x1);
+			int ord = (field_145850_b.getBlockMetadata(field_145851_c, field_145848_d, field_145849_e) & 0x1);
 			thisPart.setType((ord == 0) ? "partStargateBlock" : "partStargateChevron");
 		}
 		thisPart.devalidateHostMultiblock();

@@ -1,15 +1,17 @@
 package pcl.common.asm;
 
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 /**
- * The main IFMLLoadingPlugin hook. Forge should be told through arguments or through the
- * MANIFEST file that this code should be treated as a tweak in Forge.
+ * The main IFMLLoadingPlugin hook. Forge should be told through arguments or
+ * through the MANIFEST file that this code should be treated as a tweak in
+ * Forge.
  * 
  * @author AfterLifeLochie
  */
@@ -19,7 +21,7 @@ public class PCLCoreTransformerPlugin implements IFMLLoadingPlugin {
 	/**
 	 * The logger
 	 */
-	private static final Logger log = Logger.getLogger("PCLCoreTransformerPlugin");
+	private static final Logger log = FMLLog.getLogger();
 
 	/**
 	 * Gets the logger
@@ -34,13 +36,7 @@ public class PCLCoreTransformerPlugin implements IFMLLoadingPlugin {
 	 * Initializes the tweak plugin
 	 */
 	public PCLCoreTransformerPlugin() {
-		log.setParent(FMLLog.getLogger());
 		log.log(Level.INFO, "PCLCoreTransformerPlugin ready for action!");
-	}
-
-	@Override
-	public String[] getLibraryRequestClass() {
-		return null;
 	}
 
 	@Override
@@ -65,6 +61,11 @@ public class PCLCoreTransformerPlugin implements IFMLLoadingPlugin {
 
 	public static String[] getTransformers() {
 		return new String[] { "pcl.common.asm.ClassOptionalTransformer" };
+	}
+
+	@Override
+	public String getAccessTransformerClass() {
+		return "pcl.common.asm.ClassOptionalTransformer";
 	}
 
 }

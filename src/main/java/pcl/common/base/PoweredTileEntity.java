@@ -5,7 +5,7 @@ import ic2.api.energy.tile.IEnergySink;
 import ic2.api.energy.tile.IEnergySource;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import pcl.common.asm.ClassOptional.ClassFilterInterface;
 import pcl.common.asm.ClassOptional.ClassFilterInterfaceList;
 import pcl.common.asm.ClassOptional.ClassFilterMethod;

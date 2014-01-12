@@ -7,14 +7,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCoreCrystal extends Item {
 
-	public ItemCoreCrystal(int id) {
-		super(id);
+	public ItemCoreCrystal() {
+		super();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	protected String getIconString() {
-		return LanteaCraft.getInstance().getAssetKey() + ":" + getUnlocalizedName() + "_"
-				+ LanteaCraft.getProxy().getRenderMode();
+		return LanteaCraft.getAssetKey() + ":" + getUnlocalizedName() + "_" + LanteaCraft.getProxy().getRenderMode();
 	}
 }

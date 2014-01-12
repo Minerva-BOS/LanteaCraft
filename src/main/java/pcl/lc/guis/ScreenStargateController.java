@@ -2,14 +2,15 @@ package pcl.lc.guis;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
-import java.util.logging.Level;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import org.apache.logging.log4j.Level;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -44,9 +45,9 @@ public class ScreenStargateController extends GenericGlyphGUI {
 			}
 		});
 		world = controller.getWorldObj();
-		x = controller.xCoord;
-		y = controller.yCoord;
-		z = controller.zCoord;
+		x = controller.field_145851_c;
+		y = controller.field_145848_d;
+		z = controller.field_145849_e;
 	}
 
 	TileEntityStargateBase getStargateTE() {
@@ -58,7 +59,7 @@ public class ScreenStargateController extends GenericGlyphGUI {
 	}
 
 	TileEntityStargateController getControllerTE() {
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.func_147438_o(x, y, z);
 		if (te instanceof TileEntityStargateController)
 			return (TileEntityStargateController) te;
 		else
@@ -125,7 +126,7 @@ public class ScreenStargateController extends GenericGlyphGUI {
 	}
 
 	void buttonSound() {
-		mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+		Minecraft.getMinecraft().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 	}
 
 	@Override
@@ -145,13 +146,12 @@ public class ScreenStargateController extends GenericGlyphGUI {
 		if (Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157))
 			if (key == Keyboard.KEY_V)
 				try {
-					String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard()
-							.getData(DataFlavor.stringFlavor);
+					String data = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
 					for (char c1 : data.toCharArray())
 						if (GateAddressHelper.isValidSymbolChar(c1))
 							enterCharacter(c1);
 				} catch (Throwable t) {
-					LanteaCraft.getLogger().log(Level.WARNING, "Clipboard pull failed!", t);
+					LanteaCraft.getLogger().log(Level.WARN, "Clipboard pull failed!", t);
 				}
 	}
 
@@ -163,10 +163,10 @@ public class ScreenStargateController extends GenericGlyphGUI {
 				packet.setIsForServer(true);
 				packet.setType("LanteaPacket.DialRequest");
 				packet.setValue("Address", enteredAddress);
-				packet.setValue("DimensionID", te.worldObj.provider.dimensionId);
-				packet.setValue("WorldX", te.xCoord);
-				packet.setValue("WorldY", te.yCoord);
-				packet.setValue("WorldZ", te.zCoord);
+				packet.setValue("DimensionID", te.field_145850_b.provider.dimensionId);
+				packet.setValue("WorldX", te.field_145851_c);
+				packet.setValue("WorldY", te.field_145848_d);
+				packet.setValue("WorldZ", te.field_145849_e);
 				LanteaCraft.getProxy().sendToServer(packet);
 				closeAfterDelay(10);
 			}
@@ -194,8 +194,7 @@ public class ScreenStargateController extends GenericGlyphGUI {
 		bindTexture(LanteaCraft.getInstance().getResource("textures/gui/dhd_centre.png"), 128, 64);
 		GL11.glEnable(GL11.GL_BLEND);
 		TileEntityStargateBase te = getStargateTE();
-		boolean connected = te != null
-				&& (EnumStargateState) te.getAsStructure().getMetadata("state") != EnumStargateState.Idle
+		boolean connected = te != null && (EnumStargateState) te.getAsStructure().getMetadata("state") != EnumStargateState.Idle
 				&& (EnumStargateState) te.getAsStructure().getMetadata("state") != EnumStargateState.Disconnecting;
 		if (te == null || !te.getAsStructure().isValid())
 			setColor(0.2, 0.2, 0.2);

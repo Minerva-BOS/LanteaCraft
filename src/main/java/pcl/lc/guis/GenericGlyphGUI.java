@@ -1,5 +1,6 @@
 package pcl.lc.guis;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.Container;
 import pcl.common.base.GenericContainer;
 import pcl.common.base.GenericContainerGUI;
@@ -27,15 +28,15 @@ public abstract class GenericGlyphGUI extends GenericContainerGUI {
 		bindSGTexture("symbol_frame.png", 512 / scale, 128 / scale);
 		drawTexturedRect(x0, y, frameWidth, frameHeight, 0, 0);
 
-		GlyphRenderer.drawAddress(mc, address, x0, y, symbolsPerRow, scale, zLevel);
+		GlyphRenderer.drawAddress(Minecraft.getMinecraft(), address, x0, y, symbolsPerRow, scale, zLevel);
 		bindSGTexture("symbols.png", 512 / scale, 256 / scale);
 		int n = address.length();
 		for (int i = 0; i < n; i++) {
 			int s = GateAddressHelper.charToSymbol(address.charAt(i));
 			int row = s / symbolsPerRow;
 			int col = s % symbolsPerRow;
-			drawTexturedRect(x0 + borderSize + i * cellSize, y + borderSize, cellSize, cellSize,
-					col * cellSize * scale, row * cellSize * scale);
+			drawTexturedRect(x0 + borderSize + i * cellSize, y + borderSize, cellSize, cellSize, col * cellSize * scale, row * cellSize
+					* scale);
 		}
 	}
 
@@ -46,11 +47,11 @@ public abstract class GenericGlyphGUI extends GenericContainerGUI {
 			result.append(caret);
 		while (len > result.length())
 			result.append(padding);
-		drawCenteredString(fontRenderer, result.toString(), x, y, 0xffffff);
+		drawCenteredString(Minecraft.getMinecraft().fontRenderer, result.toString(), x, y, 0xffffff);
 	}
 
 	void bindSGTexture(String name, int usize, int vsize) {
-		bindTexture(LanteaCraft.getInstance().getResource("textures/gui/" + name), usize, vsize);
+		bindTexture(LanteaCraft.getResource("textures/gui/" + name), usize, vsize);
 	}
 
 }

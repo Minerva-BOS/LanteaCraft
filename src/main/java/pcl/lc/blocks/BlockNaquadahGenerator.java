@@ -2,6 +2,7 @@ package pcl.lc.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,9 +22,9 @@ public class BlockNaquadahGenerator extends RotationOrientedBlock {
 	IIcon topTexture, bottomTexture, sideTexture;
 
 	public BlockNaquadahGenerator(int id) {
-		super(id, Material.field_151566_D
-		setHardness(1.5F);
-		setCreativeTab(CreativeTabs.tabMisc);
+		super(id, Material.stone);
+		func_149711_c(1.5F);
+		func_149647_a(LanteaCraft.getCreativeTab());
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class BlockNaquadahGenerator extends RotationOrientedBlock {
 	}
 
 	@Override
-	public void func_94581_a(IIconRegister reg) {
+	public void func_149651_a(IIconRegister reg) {
 		topTexture = getIcon(reg, "controller_top_" + LanteaCraft.getProxy().getRenderMode());
 		bottomTexture = getIcon(reg, "controller_bottom_" + LanteaCraft.getProxy().getRenderMode());
 		sideTexture = getIcon(reg, "controller_side_" + LanteaCraft.getProxy().getRenderMode());
@@ -52,25 +53,25 @@ public class BlockNaquadahGenerator extends RotationOrientedBlock {
 	}
 
 	@Override
-	public int getRenderType() {
+	public int func_149645_b() {
 		if (LanteaCraft.Render.blockNaquadahGeneratorRenderer != null)
 			return LanteaCraft.Render.blockNaquadahGeneratorRenderer.renderID;
 		return 0;
 	}
 
 	@Override
-	public boolean renderAsNormalBlock() {
+	public boolean func_149686_d() {
 		return !LanteaCraft.getProxy().isUsingModels();
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean func_149662_c() {
 		return !LanteaCraft.getProxy().isUsingModels();
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		super.onBlockPlacedBy(world, x, y, z, player, stack);
+	public void func_149689_a(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+		super.func_149689_a(world, x, y, z, player, stack);
 		int dir = MathHelper.floor_double(player.rotationYaw * 4F / 360F + 0.5D) & 3;
 		world.setBlockMetadataWithNotify(x, y, z, dir, 0);
 	}
@@ -81,9 +82,9 @@ public class BlockNaquadahGenerator extends RotationOrientedBlock {
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int data) {
+	public void func_149749_a(World world, int x, int y, int z, Block block, int data) {
 		TileEntityNaquadahGenerator cte = (TileEntityNaquadahGenerator) getTileEntity(world, x, y, z);
-		super.breakBlock(world, x, y, z, id, data);
+		super.func_149749_a(world, x, y, z, block, data);
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class BlockNaquadahGenerator extends RotationOrientedBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float cx, float cy, float cz) {
+	public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float cx, float cy, float cz) {
 		TileEntityNaquadahGenerator te = (TileEntityNaquadahGenerator) getTileEntity(world, x, y, z);
 		if (te != null) {
 			player.openGui(LanteaCraft.getInstance(), LanteaCraft.EnumGUIs.NaquadahGenerator.ordinal(), world, x, y, z);

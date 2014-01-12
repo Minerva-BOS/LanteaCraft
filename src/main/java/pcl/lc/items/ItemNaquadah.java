@@ -7,15 +7,14 @@ import net.minecraft.item.Item;
 
 public class ItemNaquadah extends Item {
 
-	public ItemNaquadah(int id) {
-		super(id);
+	public ItemNaquadah() {
+		super();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	protected String getIconString() {
-		return LanteaCraft.getInstance().getAssetKey() + ":" + getUnlocalizedName() + "_"
-				+ LanteaCraft.getProxy().getRenderMode();
+		return LanteaCraft.getAssetKey() + ":" + getUnlocalizedName() + "_" + LanteaCraft.getProxy().getRenderMode();
 	}
 
 }

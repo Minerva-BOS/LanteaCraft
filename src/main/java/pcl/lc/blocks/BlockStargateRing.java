@@ -3,14 +3,14 @@ package pcl.lc.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import pcl.common.base.GenericContainerBlock;
 import pcl.common.util.Vector3;
 import pcl.lc.LanteaCraft;
@@ -24,41 +24,40 @@ public class BlockStargateRing extends GenericContainerBlock {
 
 	static final int numSubBlocks = 2;
 	public static final int subBlockMask = 0x1;
-	Icon topAndBottomTexture;
-	Icon sideTextures[] = new Icon[numSubBlocks];
+	IIcon topAndBottomTexture;
+	IIcon sideTextures[] = new IIcon[numSubBlocks];
 
 	static String[] subBlockTitles = { "Stargate Ring Block", "Stargate Chevron Block", };
 
 	public BlockStargateRing(int id) {
 		super(id, Block.blocksList[4].blockMaterial);
-		setHardness(1.5F);
-		setCreativeTab(CreativeTabs.tabMisc);
+		func_149711_c(1.5F);
+		func_149647_a(LanteaCraft.getCreativeTab());
 		registerSubItemNames();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	protected String getTextureName() {
-		return LanteaCraft.getInstance().getAssetKey() + ":" + getUnlocalizedName() + "_"
-				+ LanteaCraft.getProxy().getRenderMode();
+	protected String func_149641_N() {
+		return LanteaCraft.getAssetKey() + ":" + func_149739_a() + "_" + LanteaCraft.getProxy().getRenderMode();
 	}
 
 	@Override
-	public int getRenderType() {
+	public int func_149645_b() {
 		if (LanteaCraft.Render.blockRingRenderer != null)
 			return LanteaCraft.Render.blockRingRenderer.renderID;
 		return -9001;
 	}
 
 	@Override
-	public void registerIcons(IconRegister reg) {
+	public void func_149651_a(IIconRegister reg) {
 		topAndBottomTexture = getIcon(reg, "stargateBlock_" + LanteaCraft.getProxy().getRenderMode());
 		sideTextures[0] = getIcon(reg, "stargateRing_" + LanteaCraft.getProxy().getRenderMode());
 		sideTextures[1] = getIcon(reg, "stargateChevron_" + LanteaCraft.getProxy().getRenderMode());
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean func_149662_c() {
 		return false;
 	}
 
@@ -73,26 +72,25 @@ public class BlockStargateRing extends GenericContainerBlock {
 	}
 
 	@Override
-	public int damageDropped(int data) {
+	public int func_149692_a(int data) {
 		return data;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float cx,
-			float cy, float cz) {
+	public boolean func_149727_a(World world, int x, int y, int z, EntityPlayer player, int side, float cx, float cy, float cz) {
 		TileEntityStargateRing te = (TileEntityStargateRing) getTileEntity(world, x, y, z);
 		if (te.getAsPart().isMerged()) {
 			Vector3 base = te.getAsPart().findHostMultiblock(false).getLocation();
 			Block block = Block.blocksList[world.getBlockId(base.floorX(), base.floorY(), base.floorZ())];
 			if (block instanceof BlockStargateBase)
-				block.onBlockActivated(world, base.floorX(), base.floorY(), base.floorZ(), player, side, cx, cy, cz);
+				block.func_149727_a(world, base.floorX(), base.floorY(), base.floorZ(), player, side, cx, cy, cz);
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public Icon getIcon(int side, int data) {
+	public IIcon func_149691_a(int side, int data) {
 		if (side <= 1)
 			return topAndBottomTexture;
 		else
@@ -110,26 +108,25 @@ public class BlockStargateRing extends GenericContainerBlock {
 		for (int i = 0; i < BlockStargateRing.numSubBlocks; i++) {
 			String name = ItemStargateRing.subItemName(i) + ".name";
 			String title = subBlockTitles[i];
-			// registry.addStringLocalization(name, "en_US", title); --Moving to .lang file
 		}
 	}
 
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
+	public void func_149726_b(World world, int x, int y, int z) {
 		TileEntityStargateRing te = (TileEntityStargateRing) getTileEntity(world, x, y, z);
 		te.hostBlockPlaced();
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int data) {
+	public void func_149749_a(World world, int x, int y, int z, Block block, int data) {
 		TileEntityStargateRing te = (TileEntityStargateRing) getTileEntity(world, x, y, z);
-		super.breakBlock(world, x, y, z, id, data);
+		super.func_149749_a(world, x, y, z, block, data);
 		if (te != null)
 			te.getAsPart().devalidateHostMultiblock();
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity func_149915_a(World world, int metadata) {
 		return new TileEntityStargateRing();
 	}
 

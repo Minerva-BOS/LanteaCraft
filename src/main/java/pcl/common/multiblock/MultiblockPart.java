@@ -25,8 +25,8 @@ public abstract class MultiblockPart {
 	 * Called by the host tile-entity to tick this part.
 	 */
 	public void tick() {
-		if (host.worldObj != null)
-			isClient = host.worldObj.isRemote;
+		if (host.field_145850_b != null)
+			isClient = host.field_145850_b.isRemote;
 	}
 
 	/**

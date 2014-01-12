@@ -1,7 +1,8 @@
 package pcl.lc.fluids;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import pcl.common.helpers.SpecialBucketHandler;
@@ -10,8 +11,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * ItemSpecialBucket is a special bucket implementation which allows Fluids to create custom
- * bucket types generically.
+ * ItemSpecialBucket is a special bucket implementation which allows Fluids to
+ * create custom bucket types generically.
  * 
  * @author AfterLifeLochie
  */
@@ -23,8 +24,8 @@ public class ItemSpecialBucket extends ItemBucket {
 	private String iconName;
 
 	/**
-	 * Creates an instance of an ItemSpecialBucket and initializes it with default properties
-	 * and with the {@link SpecialBucketHandler} registry.
+	 * Creates an instance of an ItemSpecialBucket and initializes it with
+	 * default properties and with the {@link SpecialBucketHandler} registry.
 	 * 
 	 * @param i
 	 *            The item ID to use for this bucket.
@@ -35,7 +36,7 @@ public class ItemSpecialBucket extends ItemBucket {
 		super(i, hostBlock.blockID);
 		LanteaCraft.getSpecialBucketHandler().registerBucketMapping(hostBlock, this);
 		setCreativeTab(LanteaCraft.getCreativeTab());
-		setContainerItem(Item.bucketEmpty);
+		setContainerItem(Items.bucket);
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class ItemSpecialBucket extends ItemBucket {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
+	public void registerIcons(IIconRegister par1IconRegister) {
 		itemIcon = par1IconRegister.registerIcon(LanteaCraft.getAssetKey() + ":" + iconName);
 	}
 }

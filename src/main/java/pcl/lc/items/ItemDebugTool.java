@@ -2,12 +2,12 @@ package pcl.lc.items;
 
 import java.util.logging.Level;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import pcl.lc.LanteaCraft;
 import pcl.lc.tileentity.TileEntityStargateBase;
@@ -18,17 +18,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDebugTool extends Item {
 	@SideOnly(Side.CLIENT)
-	private Icon theIcon;
+	private IIcon theIcon;
 
-	public ItemDebugTool(int itemid) {
-		super(itemid);
+	public ItemDebugTool() {
+		super();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	protected String getIconString() {
-		return LanteaCraft.getInstance().getAssetKey() + ":" + getUnlocalizedName() + "_"
-				+ LanteaCraft.getProxy().getRenderMode();
+		return LanteaCraft.getAssetKey() + ":" + getUnlocalizedName() + "_" + LanteaCraft.getProxy().getRenderMode();
 	}
 
 	/**
@@ -40,7 +39,6 @@ public class ItemDebugTool extends Item {
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4,
 			int par5, int par6, int par7, float par8, float par9, float par10) {
 		String side = (par3World.isRemote) ? "client" : "server";
-		int i1 = par3World.getBlockId(par4, par5, par6);
 		LanteaCraft.getLogger().log(Level.INFO,
 				"Debugger used at (" + par4 + ", " + par5 + ", " + par6 + ") on " + side);
 		par2EntityPlayer.addChatMessage("Data for (" + par4 + ", " + par5 + ", " + par6 + ") side " + side + ":");
@@ -65,7 +63,7 @@ public class ItemDebugTool extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
+	public void registerIcons(IIconRegister par1IconRegister) {
 		itemIcon = par1IconRegister.registerIcon("pcl_lc:creative_icon");
 	}
 

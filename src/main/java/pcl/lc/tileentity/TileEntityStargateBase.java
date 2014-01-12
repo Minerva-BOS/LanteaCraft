@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -16,10 +17,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet41EntityEffect;
-import net.minecraft.network.packet.Packet43Experience;
-import net.minecraft.network.packet.Packet9Respawn;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
@@ -50,9 +47,6 @@ import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
-import dan200.computer.api.IComputerAccess;
-import dan200.computer.api.ILuaContext;
-import dan200.computer.api.IPeripheral;
 
 @InterfaceList({ @Interface(iface = "dan200.computer.api.IPeripheral", modid = "ComputerCraft") })
 public class TileEntityStargateBase extends TileEntityChunkLoader implements IInventory, IPeripheral {
@@ -119,7 +113,7 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 		}
 
 		public String getDeathMessage(EntityPlayer player) {
-			return player.username + " was torn apart by an event horizon";
+			return player.field_146106_i.username + " was torn apart by an event horizon";
 		}
 	}
 
@@ -140,7 +134,7 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	 */
 	@Deprecated
 	public static TileEntityStargateBase at(IBlockAccess world, int x, int y, int z) {
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.func_147438_o(x, y, z);
 		if (te instanceof TileEntityStargateBase)
 			return (TileEntityStargateBase) te;
 		else
@@ -166,11 +160,12 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getAABBPool().getAABB(xCoord - 2, yCoord, zCoord - 2, xCoord + 3, yCoord + 5, zCoord + 3);
+		return AxisAlignedBB.getAABBPool().getAABB(field_145851_c - 2, field_145848_d, field_145849_e - 2, field_145851_c + 3,
+				field_145848_d + 5, field_145849_e + 3);
 	}
 
 	@Override
-	public boolean isInvNameLocalized() {
+	public boolean func_145818_k_() {
 		return false;
 	}
 
@@ -180,8 +175,8 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
+	public void func_145839_a(NBTTagCompound nbt) {
+		super.func_145839_a(nbt);
 		numEngagedChevrons = nbt.getInteger("numEngagedChevrons");
 		if (nbt.hasKey("connectedLocation"))
 			connectedLocation = new WorldLocation(nbt.getCompoundTag("connectedLocation"));
@@ -205,9 +200,9 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 
 	public NBTTagCompound nbtWithCoords() {
 		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setInteger("x", xCoord);
-		nbt.setInteger("y", yCoord);
-		nbt.setInteger("z", zCoord);
+		nbt.setInteger("x", field_145851_c);
+		nbt.setInteger("y", field_145848_d);
+		nbt.setInteger("z", field_145849_e);
 		return nbt;
 	}
 
@@ -216,11 +211,11 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	}
 
 	public BlockStargateBase getBlock() {
-		return (BlockStargateBase) getBlockType();
+		return (BlockStargateBase) func_145838_q();
 	}
 
 	public int getRotation() {
-		return getBlock().rotationInWorld(getBlockMetadata(), this);
+		return getBlock().rotationInWorld(func_145832_p(), this);
 	}
 
 	public double interpolatedRingAngle(double t) {
@@ -233,7 +228,7 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	}
 
 	@Override
-	public void updateEntity() {
+	public void func_145845_h() {
 		advance();
 		multiblock.tick();
 	}
@@ -247,23 +242,21 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 			hasSetChunkZone = true;
 		}
 
-		if (worldObj.isRemote) {
+		if (field_145850_b.isRemote) {
 			if (getAsStructure().isValid() && lastState != getState()) {
 				lastState = getState();
 				timeout = (Integer) getAsStructure().getMetadata("timeout");
 				numEngagedChevrons = (Integer) getAsStructure().getMetadata("numEngagedChevrons");
-				int targetpos = Character.getNumericValue(getDialledAddres().indexOf(numEngagedChevrons))
-						- Character.getNumericValue('A');
-				LanteaCraft.getLogger().log(Level.INFO,
-						"Timeout " + timeout + ", neng " + numEngagedChevrons + ", target " + targetpos);
+				int targetpos = Character.getNumericValue(getDialledAddres().indexOf(numEngagedChevrons)) - Character.getNumericValue('A');
+				LanteaCraft.getLogger().log(Level.INFO, "Timeout " + timeout + ", neng " + numEngagedChevrons + ", target " + targetpos);
 				renderNextRingAngle = MathUtils.normaliseAngle(targetpos * ringSymbolAngle - 45 * numEngagedChevrons);
 				switch (getState()) {
-					case Transient:
-						initiateOpeningTransient();
-						break;
-					case Disconnecting:
-						initiateClosingTransient();
-						break;
+				case Transient:
+					initiateOpeningTransient();
+					break;
+				case Disconnecting:
+					initiateClosingTransient();
+					break;
 				}
 			}
 
@@ -284,28 +277,28 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 					--timeout;
 				} else
 					switch (getState()) {
-						case Idle:
-							if (m_computer != null)
-								m_computer.queueEvent("sgIdle", new Object[] { true });
-							if (undialledDigitsRemaining())
-								startDiallingSymbol(getDialledAddres().charAt(numEngagedChevrons));
-							break;
-						case Dialling:
-							finishDiallingSymbol();
-							break;
-						case InterDialling:
+					case Idle:
+						if (m_computer != null)
+							m_computer.queueEvent("sgIdle", new Object[] { true });
+						if (undialledDigitsRemaining())
 							startDiallingSymbol(getDialledAddres().charAt(numEngagedChevrons));
-							break;
-						case Transient:
-							enterState(EnumStargateState.Connected, isInitiator ? ticksToStayOpen : 0);
-							break;
-						case Connected:
-							if (isInitiator)
-								disconnect();
-							break;
-						case Disconnecting:
-							enterState(EnumStargateState.Idle, 0);
-							break;
+						break;
+					case Dialling:
+						finishDiallingSymbol();
+						break;
+					case InterDialling:
+						startDiallingSymbol(getDialledAddres().charAt(numEngagedChevrons));
+						break;
+					case Transient:
+						enterState(EnumStargateState.Connected, isInitiator ? ticksToStayOpen : 0);
+						break;
+					case Connected:
+						if (isInitiator)
+							disconnect();
+						break;
+					case Disconnecting:
+						enterState(EnumStargateState.Idle, 0);
+						break;
 					}
 			}
 			checkForEntitiesInPortal();
@@ -331,7 +324,8 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	}
 
 	/**
-	 * Causes the Stargate to enter the specified state for the specified number of ticks.
+	 * Causes the Stargate to enter the specified state for the specified number
+	 * of ticks.
 	 * 
 	 * @param newState
 	 *            The state to enter
@@ -351,7 +345,7 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 				powerLevel = 0;
 		} else if (getState() == EnumStargateState.Disconnecting || getState() == EnumStargateState.Idle)
 			powerLevel = 0;
-		worldObj.notifyBlockChange(xCoord, yCoord, zCoord, blockType.blockID);
+		field_145850_b.func_147444_c(field_145851_c, field_145848_d, field_145849_e, blockType.blockID);
 		onInventoryChanged();
 		markBlockForUpdate();
 	}
@@ -499,7 +493,7 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	}
 
 	private Trans3 localToGlobalTransformation() {
-		return getBlock().localToGlobalTransformation(xCoord, yCoord, zCoord, getBlockMetadata(), this);
+		return getBlock().localToGlobalTransformation(field_145851_c, field_145848_d, field_145849_e, func_145832_p(), this);
 	}
 
 	private void performTransientDamage() {
@@ -509,7 +503,7 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 		Vector3 q0 = p0.min(p1);
 		Vector3 q1 = p0.max(p1);
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(q0.x, q0.y, q0.z, q1.x, q1.y, q1.z);
-		List<EntityLiving> ents = worldObj.getEntitiesWithinAABB(EntityLiving.class, box);
+		List<EntityLiving> ents = field_145850_b.getEntitiesWithinAABB(EntityLiving.class, box);
 		for (EntityLiving ent : ents) {
 			Vector3 ep = new Vector3(ent.posX, ent.posY, ent.posZ);
 			Vector3 gp = t.p(0, 2, 0.5);
@@ -580,7 +574,7 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 			Vector3 p1 = new Vector3(1.5, 3.5, 3.5);
 			Trans3 t = localToGlobalTransformation();
 			AxisAlignedBB box = t.box(p0, p1);
-			List<Entity> ents = worldObj.getEntitiesWithinAABB(Entity.class, box);
+			List<Entity> ents = field_145850_b.getEntitiesWithinAABB(Entity.class, box);
 			for (Entity entity : ents)
 				if (!entity.isDead && entity.ridingEntity == null)
 					trackedEntities.add(new TrackedEntity(entity));
@@ -676,9 +670,8 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 		WorldServer oldWorld = server.worldServerForDimension(oldDimension);
 		WorldServer newWorld = server.worldServerForDimension(newDimension);
 		player.closeScreen();
-		player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension,
-				(byte) player.worldObj.difficultySetting, newWorld.getWorldInfo().getTerrainType(), newWorld
-						.getHeight(), player.theItemInWorldManager.getGameType()));
+		player.playerNetServerHandler.sendPacketToPlayer(new Packet9Respawn(player.dimension, (byte) player.worldObj.difficultySetting,
+				newWorld.getWorldInfo().getTerrainType(), newWorld.getHeight(), player.theItemInWorldManager.getGameType()));
 		oldWorld.removePlayerEntityDangerously(player);
 		player.isDead = false;
 		player.setLocationAndAngles(p.x, p.y, p.z, (float) a, player.rotationPitch);
@@ -694,8 +687,8 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 			PotionEffect effect = (PotionEffect) var6.next();
 			player.playerNetServerHandler.sendPacketToPlayer(new Packet41EntityEffect(player.entityId, effect));
 		}
-		player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience,
-				player.experienceTotal, player.experienceLevel));
+		player.playerNetServerHandler.sendPacketToPlayer(new Packet43Experience(player.experience, player.experienceTotal,
+				player.experienceLevel));
 		GameRegistry.onPlayerChangedDimension(player);
 	}
 
@@ -895,14 +888,13 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	@Override
 	@Method(modid = "ComputerCraft")
 	public String[] getMethodNames() {
-		return new String[] { "dial", "connect", "disconnect", "isConnected", "getAddress", "isDialing", "isComplete",
-				"isBusy", "hasFuel", "isValidAddress" };
+		return new String[] { "dial", "connect", "disconnect", "isConnected", "getAddress", "isDialing", "isComplete", "isBusy", "hasFuel",
+				"isValidAddress" };
 	}
 
 	@Override
 	@Method(modid = "ComputerCraft")
-	public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments)
-			throws Exception {
+	public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws Exception {
 		if (method == 0 || method == 1) { // dial or connect
 			String address = arguments[0].toString().toUpperCase();
 			if (address.length() != 7)
@@ -1016,12 +1008,12 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 	}
 
 	public void hostBlockPlaced() {
-		if (!worldObj.isRemote)
+		if (!field_145850_b.isRemote)
 			getAsStructure().invalidate();
 	}
 
 	public void hostBlockDestroyed() {
-		if (!worldObj.isRemote)
+		if (!field_145850_b.isRemote)
 			getAsStructure().disband();
 	}
 

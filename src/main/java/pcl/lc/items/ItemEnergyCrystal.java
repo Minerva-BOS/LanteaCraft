@@ -11,16 +11,14 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemEnergyCrystal extends Item implements IItemEnergyStore {
 
-	public ItemEnergyCrystal(int id) {
-		super(id);
+	public ItemEnergyCrystal() {
 		setMaxStackSize(1);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	protected String getIconString() {
-		return LanteaCraft.getInstance().getAssetKey() + ":" + getUnlocalizedName() + "_"
-				+ LanteaCraft.getProxy().getRenderMode();
+		return LanteaCraft.getAssetKey() + ":" + getUnlocalizedName() + "_" + LanteaCraft.getProxy().getRenderMode();
 	}
 
 	@Override

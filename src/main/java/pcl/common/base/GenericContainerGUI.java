@@ -1,5 +1,6 @@
 package pcl.common.base;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
@@ -20,8 +21,8 @@ public abstract class GenericContainerGUI extends GuiContainer {
 
 	public GenericContainerGUI(Container container, int width, int height) {
 		super(container);
-		xSize = width;
-		ySize = height;
+		field_146999_f = width;
+		field_147000_g = height;
 	}
 
 	public GenericContainerGUI(GenericContainer container) {
@@ -37,9 +38,9 @@ public abstract class GenericContainerGUI extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+	protected void func_146976_a(float var1, int var2, int var3) {
 		GL11.glPushMatrix();
-		GL11.glTranslatef(guiLeft, guiTop, 0.0F);
+		GL11.glTranslatef(field_147003_i, field_147009_r, 0.0F);
 		drawBackgroundLayer();
 		GL11.glPopMatrix();
 	}
@@ -47,14 +48,14 @@ public abstract class GenericContainerGUI extends GuiContainer {
 	protected abstract void drawBackgroundLayer();
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+	protected void func_146979_b(int par1, int par2) {
 		drawForegroundLayer();
 	}
 
 	protected abstract void drawForegroundLayer();
 
 	protected void close() {
-		mc.thePlayer.closeScreen();
+		Minecraft.getMinecraft().thePlayer.closeScreen();
 	}
 
 	protected void bindTexture(ResourceLocation rsrc) {
@@ -62,7 +63,7 @@ public abstract class GenericContainerGUI extends GuiContainer {
 	}
 
 	public void bindTexture(ResourceLocation rsrc, int usize, int vsize) {
-		mc.getTextureManager().bindTexture(rsrc);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(rsrc);
 		uscale = 1.0 / usize;
 		vscale = 1.0 / vsize;
 	}
@@ -105,11 +106,12 @@ public abstract class GenericContainerGUI extends GuiContainer {
 	}
 
 	public void drawString(String s, int x, int y) {
-		fontRenderer.drawString(s, x, y, textColor, textShadow);
+		Minecraft.getMinecraft().fontRenderer.drawString(s, x, y, textColor, textShadow);
 	}
 
 	public void drawCenteredString(String s, int x, int y) {
-		fontRenderer.drawString(s, x - fontRenderer.getStringWidth(s) / 2, y, textColor, textShadow);
+		Minecraft.getMinecraft().fontRenderer.drawString(s, x - Minecraft.getMinecraft().fontRenderer.getStringWidth(s) / 2, y, textColor,
+				textShadow);
 	}
 
 	public void drawInventoryName(IInventory inv, int x, int y) {
@@ -117,12 +119,12 @@ public abstract class GenericContainerGUI extends GuiContainer {
 	}
 
 	public void drawPlayerInventoryName() {
-		drawString(playerInventoryName(), 8, ySize - 96 + 2);
+		drawString(playerInventoryName(), 8, field_146999_f - 96 + 2);
 	}
 
 	public static String inventoryName(IInventory inv) {
-		String name = inv.getInvName();
-		if (!inv.isInvNameLocalized())
+		String name = inv.func_145825_b();
+		if (!inv.func_145818_k_())
 			name = StatCollector.translateToLocal(name);
 		return name;
 	}

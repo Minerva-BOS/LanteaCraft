@@ -1,5 +1,6 @@
 package pcl.lc.guis;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import pcl.common.base.GenericContainerGUI;
 import pcl.lc.LanteaCraft;
@@ -34,16 +35,16 @@ public class ScreenNaquadahGenerator extends GenericContainerGUI {
 		if (sg.substring(sg.indexOf(".") + 1).length() != 2)
 			sg.append("0");
 		sg.append("%");
-		int dw = fontRenderer.getStringWidth(sg.toString());
-		fontRenderer.drawString(sg.toString(), 48 + ((int) Math.floor((80d - dw) / 2)), 98,
+		int dw = Minecraft.getMinecraft().fontRenderer.getStringWidth(sg.toString());
+		Minecraft.getMinecraft().fontRenderer.drawString(sg.toString(), 48 + ((int) Math.floor((80d - dw) / 2)), 98,
 				(tileEntity.displayEnergy > 0.00d) ? 0xFFFFFF : 0x9F0101, true);
 
 		StringBuilder st = new StringBuilder().append("Tank: ").append(tileEntity.displayTankVolume / 100d);
 		if (st.substring(st.indexOf(".") + 1).length() != 2)
 			st.append("0");
 		st.append("%");
-		int dm = fontRenderer.getStringWidth(st.toString());
-		fontRenderer.drawString(st.toString(), 48 + ((int) Math.floor((80d - dm) / 2)), 110, 0xFFFFFF);
+		int dm = Minecraft.getMinecraft().fontRenderer.getStringWidth(st.toString());
+		Minecraft.getMinecraft().fontRenderer.drawString(st.toString(), 48 + ((int) Math.floor((80d - dm) / 2)), 110, 0xFFFFFF);
 
 	}
 

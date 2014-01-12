@@ -11,7 +11,7 @@ public class WorldLocation {
 	public int x, y, z;
 
 	public WorldLocation(TileEntity te) {
-		this(te.worldObj.provider.dimensionId, te.xCoord, te.yCoord, te.zCoord);
+		this(te.field_145850_b.provider.dimensionId, te.field_145851_c, te.field_145848_d, te.field_145849_e);
 	}
 
 	public WorldLocation(int dimension, int x, int y, int z) {
@@ -41,7 +41,7 @@ public class WorldLocation {
 		World world = GateAddressHelper.getWorld(dimension);
 		if (world == null)
 			return null;
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.func_147438_o(x, y, z);
 		if (te instanceof TileEntityStargateBase)
 			return (TileEntityStargateBase) te;
 		else

@@ -12,7 +12,7 @@ public abstract class RotationOrientedBlock extends OrientedBlock {
 	int rotationMask = 0x3;
 
 	public RotationOrientedBlock(int id, Material material) {
-		super(id, material);
+		super(material);
 	}
 
 	public void setRotation(World world, int x, int y, int z, int rotation, int flags) {
@@ -35,7 +35,7 @@ public abstract class RotationOrientedBlock extends OrientedBlock {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
+	public void func_149689_a(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
 		int rotation = Math.round((180 - player.rotationYaw) / 90) & 3;
 		setRotation(world, x, y, z, rotation, 0x3);
 	}

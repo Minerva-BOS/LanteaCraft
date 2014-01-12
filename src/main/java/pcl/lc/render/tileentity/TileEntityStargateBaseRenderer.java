@@ -57,7 +57,7 @@ public class TileEntityStargateBaseRenderer extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity te, double x, double y, double z, float t) {
+	public void func_147500_a(TileEntity te, double x, double y, double z, float t) {
 		TileEntityStargateBase tesg = (TileEntityStargateBase) te;
 		if (tesg.getAsStructure().isValid()) {
 			GL11.glPushMatrix();
@@ -71,6 +71,6 @@ public class TileEntityStargateBaseRenderer extends TileEntitySpecialRenderer {
 	}
 
 	public void bind(ResourceLocation resource) {
-		bindTexture(resource);
+		func_147499_a(resource);
 	}
 }

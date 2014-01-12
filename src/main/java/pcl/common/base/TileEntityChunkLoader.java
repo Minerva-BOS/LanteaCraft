@@ -17,9 +17,9 @@ public abstract class TileEntityChunkLoader extends GenericTileEntity {
 		if (ticket != null) {
 			NBTTagCompound nbt = ticket.getModData();
 			nbt.setString("type", "TileEntity");
-			nbt.setInteger("xCoord", xCoord);
-			nbt.setInteger("yCoord", yCoord);
-			nbt.setInteger("zCoord", zCoord);
+			nbt.setInteger("xCoord", field_145851_c);
+			nbt.setInteger("yCoord", field_145848_d);
+			nbt.setInteger("zCoord", field_145849_e);
 			nbt.setInteger("rangeMinX", minX);
 			nbt.setInteger("rangeMinZ", minZ);
 			nbt.setInteger("rangeMaxX", maxX);
@@ -38,8 +38,8 @@ public abstract class TileEntityChunkLoader extends GenericTileEntity {
 		int minZ = nbt.getInteger("rangeMinZ");
 		int maxX = nbt.getInteger("rangeMaxX");
 		int maxZ = nbt.getInteger("rangeMaxZ");
-		int chunkX = xCoord >> 4;
-		int chunkZ = zCoord >> 4;
+		int chunkX = field_145851_c >> 4;
+		int chunkZ = field_145849_e >> 4;
 		for (int i = minX; i <= maxX; i++)
 			for (int j = minZ; j <= maxZ; j++) {
 				int x = chunkX + i, z = chunkZ + j;
@@ -51,7 +51,7 @@ public abstract class TileEntityChunkLoader extends GenericTileEntity {
 
 	public Ticket getChunkTicket() {
 		if (chunkTicket == null)
-			chunkTicket = getChunkManager().newTicket(worldObj);
+			chunkTicket = getChunkManager().newTicket(field_145850_b);
 		return chunkTicket;
 	}
 
@@ -65,10 +65,10 @@ public abstract class TileEntityChunkLoader extends GenericTileEntity {
 	}
 
 	@Override
-	public void invalidate() {
+	public void func_145843_s() {
 		// System.out.printf("BaseChunkLoadingTE.invalidate\n");
 		releaseChunkTicket();
-		super.invalidate();
+		super.func_145843_s();
 	}
 
 	public void releaseChunkTicket() {

@@ -18,7 +18,7 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 		if (syncWithClient()) {
 			NBTTagCompound nbt = new NBTTagCompound();
 			writeToNBT(nbt);
-			return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
+			return new Packet132TileEntityData(field_145851_c, field_145848_d, field_145849_e, 0, nbt);
 		} else
 			return null;
 	}
@@ -26,7 +26,7 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
 		readFromNBT(pkt.data);
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		field_145850_b.func_147471_g(field_145851_c, field_145848_d, field_145849_e);
 	}
 
 	boolean syncWithClient() {
@@ -34,11 +34,11 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	public void markBlockForUpdate() {
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		field_145850_b.func_147471_g(field_145851_c, field_145848_d, field_145849_e);
 	}
 
 	public void playSoundEffect(String name, float volume, float pitch) {
-		worldObj.playSoundEffect(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, name, volume, pitch);
+		field_145850_b.playSoundEffect(field_145851_c + 0.5, field_145848_d + 0.5, field_145849_e + 0.5, name, volume, pitch);
 	}
 
 	public IInventory getInventory() {
@@ -46,8 +46,8 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
+	public void func_145839_a(NBTTagCompound nbt) {
+		super.func_145839_a(nbt);
 		IInventory inventory = getInventory();
 		if (inventory != null) {
 			NBTTagList list = nbt.getTagList("inventory");
@@ -62,8 +62,8 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
-		super.writeToNBT(nbt);
+	public void func_145841_b(NBTTagCompound nbt) {
+		super.func_145841_b(nbt);
 		IInventory inventory = getInventory();
 		if (inventory != null) {
 			NBTTagList list = new NBTTagList();
@@ -100,8 +100,8 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	/**
-	 * Removes from an inventory slot (first arg) up to a specified number (second arg) of
-	 * items and returns them in a new stack.
+	 * Removes from an inventory slot (first arg) up to a specified number
+	 * (second arg) of items and returns them in a new stack.
 	 */
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
@@ -115,8 +115,9 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	/**
-	 * When some containers are closed they call this on each slot, then drop whatever it
-	 * returns as an EntityItem - like when you close a workbench GUI.
+	 * When some containers are closed they call this on each slot, then drop
+	 * whatever it returns as an EntityItem - like when you close a workbench
+	 * GUI.
 	 */
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
@@ -130,8 +131,8 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	/**
-	 * Sets the given item stack to the specified slot in the inventory (can be crafting or
-	 * armor sections).
+	 * Sets the given item stack to the specified slot in the inventory (can be
+	 * crafting or armor sections).
 	 */
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
@@ -146,14 +147,14 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	 * Returns the name of the inventory.
 	 */
 	@Override
-	public String getInvName() {
+	public String func_145825_b() {
 		IInventory inventory = getInventory();
-		return inventory != null ? inventory.getInvName() : "";
+		return inventory != null ? inventory.func_145825_b() : "";
 	}
 
 	/**
-	 * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly
-	 * will be extended. *Isn't this more of a set than a get?*
+	 * Returns the maximum stack size for a inventory slot. Seems to always be
+	 * 64, possibly will be extended. *Isn't this more of a set than a get?*
 	 */
 	@Override
 	public int getInventoryStackLimit() {
@@ -162,7 +163,8 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	/**
-	 * Do not make give this method the name canInteractWith because it clashes with Container
+	 * Do not make give this method the name canInteractWith because it clashes
+	 * with Container
 	 */
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
@@ -194,17 +196,17 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	@Override
-	public boolean isInvNameLocalized() {
+	public boolean func_145818_k_() {
 		IInventory inventory = getInventory();
 		if (inventory != null)
-			return inventory.isInvNameLocalized();
+			return inventory.func_145818_k_();
 		else
 			return false;
 	}
 
 	/**
-	 * Returns an array containing the indices of the slots that can be accessed by automation
-	 * on the given side of this block.
+	 * Returns an array containing the indices of the slots that can be accessed
+	 * by automation on the given side of this block.
 	 */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
@@ -216,8 +218,8 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	/**
-	 * Returns true if automation can insert the given item in the given slot from the given
-	 * side. Args: Slot, item, side
+	 * Returns true if automation can insert the given item in the given slot
+	 * from the given side. Args: Slot, item, side
 	 */
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
@@ -229,8 +231,8 @@ public class GenericTileEntity extends TileEntity implements IInventory, ISidedI
 	}
 
 	/**
-	 * Returns true if automation can extract the given item in the given slot from the given
-	 * side. Args: Slot, item, side
+	 * Returns true if automation can extract the given item in the given slot
+	 * from the given side. Args: Slot, item, side
 	 */
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {

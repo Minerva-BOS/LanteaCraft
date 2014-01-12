@@ -9,12 +9,12 @@ import pcl.lc.LanteaCraft;
 
 public abstract class OrientedBlock extends GenericContainerBlock {
 
-	public OrientedBlock(int id, Material material) {
-		super(id, material);
+	public OrientedBlock(Material material) {
+		super(material);
 	}
 
 	@Override
-	public int getRenderType() {
+	public int func_149645_b() {
 		if (LanteaCraft.Render.blockOrientedRenderer != null)
 			return LanteaCraft.Render.blockOrientedRenderer.renderID;
 		return -9001;

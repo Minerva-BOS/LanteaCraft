@@ -2,7 +2,8 @@ package pcl.lc.multiblock;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -20,8 +21,8 @@ public class StargateMultiblock extends GenericMultiblock {
 
 	private int rotation;
 
-	private int[][] stargateModel = { { 1, 2, 1, 3, 1, 2, 1 }, { 2, 0, 0, 0, 0, 0, 2 }, { 1, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 1 }, { 2, 0, 0, 0, 0, 0, 2 }, { 1, 0, 0, 0, 0, 0, 1 }, { 1, 2, 1, 2, 1, 2, 1 } };
+	private int[][] stargateModel = { { 1, 2, 1, 3, 1, 2, 1 }, { 2, 0, 0, 0, 0, 0, 2 }, { 1, 0, 0, 0, 0, 0, 1 }, { 1, 0, 0, 0, 0, 0, 1 },
+			{ 2, 0, 0, 0, 0, 0, 2 }, { 1, 0, 0, 0, 0, 0, 1 }, { 1, 2, 1, 2, 1, 2, 1 } };
 
 	public StargateMultiblock(TileEntity host) {
 		super(host);
@@ -85,17 +86,18 @@ public class StargateMultiblock extends GenericMultiblock {
 	 *            The y-coordinate of the base
 	 * @param baseZ
 	 *            The z-coordinate of the base
-	 * @return Any valid gate orientation, or null if no valid orientation is found
+	 * @return Any valid gate orientation, or null if no valid orientation is
+	 *         found
 	 */
 	private EnumOrientations getOrientation(World worldAccess, int baseX, int baseY, int baseZ) {
 		// Test North-South alignment along Z axis
-		if (isGateTileEntity(worldAccess.getBlockTileEntity(baseX, baseY, baseZ + 1))
-				&& isGateTileEntity(worldAccess.getBlockTileEntity(baseX, baseY, baseZ - 1)))
+		if (isGateTileEntity(worldAccess.func_147438_o(baseX, baseY, baseZ + 1))
+				&& isGateTileEntity(worldAccess.func_147438_o(baseX, baseY, baseZ - 1)))
 			return EnumOrientations.NORTH_SOUTH;
 
 		// Test East-West alignment along X axis
-		if (isGateTileEntity(worldAccess.getBlockTileEntity(baseX + 1, baseY, baseZ))
-				&& isGateTileEntity(worldAccess.getBlockTileEntity(baseX - 1, baseY, baseZ)))
+		if (isGateTileEntity(worldAccess.func_147438_o(baseX + 1, baseY, baseZ))
+				&& isGateTileEntity(worldAccess.func_147438_o(baseX - 1, baseY, baseZ)))
 			return EnumOrientations.EAST_WEST;
 
 		// Likely not a valid orientation at all
@@ -111,7 +113,7 @@ public class StargateMultiblock extends GenericMultiblock {
 			LanteaCraft.getLogger().log(Level.INFO, "Testing EASTWEST");
 			for (int y = 0; y < 7; y++)
 				for (int x = 0; x < 7; x++) {
-					TileEntity entity = worldAccess.getBlockTileEntity(baseX + (x - 3), baseY + y, baseZ);
+					TileEntity entity = worldAccess.func_147438_o(baseX + (x - 3), baseY + y, baseZ);
 					if (!testIsValidForExpected(entity, stargateModel[y][x]))
 						return false;
 				}
@@ -123,7 +125,7 @@ public class StargateMultiblock extends GenericMultiblock {
 			LanteaCraft.getLogger().log(Level.INFO, "Testing NORTHSOUTH");
 			for (int y = 0; y < 7; y++)
 				for (int z = 0; z < 7; z++) {
-					TileEntity entity = worldAccess.getBlockTileEntity(baseX, baseY + y, baseZ + (z - 3));
+					TileEntity entity = worldAccess.func_147438_o(baseX, baseY + y, baseZ + (z - 3));
 					if (!testIsValidForExpected(entity, stargateModel[y][z]))
 						return false;
 				}
@@ -169,7 +171,7 @@ public class StargateMultiblock extends GenericMultiblock {
 			LanteaCraft.getLogger().log(Level.INFO, "Globbing EASTWEST");
 			for (int x = 0; x < 7; x++)
 				for (int y = 0; y < 7; y++) {
-					TileEntity entity = worldAccess.getBlockTileEntity(baseX + (x - 3), baseY + y, baseZ);
+					TileEntity entity = worldAccess.func_147438_o(baseX + (x - 3), baseY + y, baseZ);
 					if (stargateModel[y][x] != 0 && stargateModel[y][x] != 3) {
 						TileEntityStargateRing entityAsRing = (TileEntityStargateRing) entity;
 						StargatePart teAsPart = entityAsRing.getAsPart();
@@ -189,7 +191,7 @@ public class StargateMultiblock extends GenericMultiblock {
 			LanteaCraft.getLogger().log(Level.INFO, "Globbing NORTHSOUTH");
 			for (int z = 0; z < 7; z++)
 				for (int y = 0; y < 7; y++) {
-					TileEntity entity = worldAccess.getBlockTileEntity(baseX, baseY + y, baseZ + (z - 3));
+					TileEntity entity = worldAccess.func_147438_o(baseX, baseY + y, baseZ + (z - 3));
 					if (stargateModel[y][z] != 0 && stargateModel[y][z] != 3) {
 						TileEntityStargateRing entityAsRing = (TileEntityStargateRing) entity;
 						StargatePart teAsPart = entityAsRing.getAsPart();
@@ -211,8 +213,7 @@ public class StargateMultiblock extends GenericMultiblock {
 
 	@Override
 	public void freeStructure() {
-		LanteaCraft.getLogger().log(Level.INFO,
-				((isClient) ? "[client]" : "[server]") + " Releasing multiblock structure.");
+		LanteaCraft.getLogger().log(Level.INFO, ((isClient) ? "[client]" : "[server]") + " Releasing multiblock structure.");
 		for (Entry<Object, MultiblockPart> part : structureParts.entrySet())
 			part.getValue().release();
 		structureParts.clear();
@@ -253,10 +254,10 @@ public class StargateMultiblock extends GenericMultiblock {
 		for (Entry<Object, MultiblockPart> part : structureParts.entrySet())
 			gparts.put(part.getKey(), part.getValue().getVectorLoc());
 		packet.setValue("parts", gparts);
-		packet.setValue("DimensionID", host.worldObj.provider.dimensionId);
-		packet.setValue("WorldX", host.xCoord);
-		packet.setValue("WorldY", host.yCoord);
-		packet.setValue("WorldZ", host.zCoord);
+		packet.setValue("DimensionID", host.field_145850_b.provider.dimensionId);
+		packet.setValue("WorldX", host.field_145851_c);
+		packet.setValue("WorldY", host.field_145848_d);
+		packet.setValue("WorldZ", host.field_145849_e);
 		return packet;
 	}
 
@@ -269,7 +270,7 @@ public class StargateMultiblock extends GenericMultiblock {
 		if (!isValid)
 			freeStructure();
 		else
-			collectStructure(host.worldObj, host.xCoord, host.yCoord, host.zCoord);
+			collectStructure(host.field_145850_b, host.field_145851_c, host.field_145848_d, host.field_145849_e);
 	}
 
 	@Override
@@ -277,10 +278,10 @@ public class StargateMultiblock extends GenericMultiblock {
 		StandardModPacket packet = new StandardModPacket();
 		packet.setIsForServer(true);
 		packet.setType("LanteaPacket.UpdateRequest");
-		packet.setValue("DimensionID", host.worldObj.provider.dimensionId);
-		packet.setValue("WorldX", host.xCoord);
-		packet.setValue("WorldY", host.yCoord);
-		packet.setValue("WorldZ", host.zCoord);
+		packet.setValue("DimensionID", host.field_145850_b.provider.dimensionId);
+		packet.setValue("WorldX", host.field_145851_c);
+		packet.setValue("WorldY", host.field_145848_d);
+		packet.setValue("WorldZ", host.field_145849_e);
 		return packet;
 	}
 }

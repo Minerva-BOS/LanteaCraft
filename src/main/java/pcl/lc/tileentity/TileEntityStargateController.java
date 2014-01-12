@@ -28,7 +28,7 @@ public class TileEntityStargateController extends GenericTileEntity {
 	}
 
 	public Trans3 localToGlobalTransformation() {
-		return getBlock().localToGlobalTransformation(xCoord, yCoord, zCoord, getBlockMetadata(), this);
+		return getBlock().localToGlobalTransformation(field_145851_c, field_145848_d, field_145849_e, func_145832_p(), this);
 	}
 
 	@Override

@@ -8,7 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import net.minecraftforge.common.ForgeVersion;
 import pcl.lc.BuildInfo;
@@ -51,7 +52,7 @@ public class AnalyticsHelper extends Thread {
 				report.append(pack("forge", ForgeVersion.getVersion()));
 			}
 		} catch (UnsupportedEncodingException e) {
-			LanteaCraft.getLogger().log(Level.WARNING, "This client is weird and doesn't suppport UTF-8, giving up.");
+			LanteaCraft.getLogger().log(Level.WARN, "This client is weird and doesn't suppport UTF-8, giving up.");
 			tries += maxTries;
 		}
 	}
@@ -59,8 +60,7 @@ public class AnalyticsHelper extends Thread {
 	@Override
 	public void run() {
 		if (BuildInfo.buildNumber.equals("@" + "BUILD" + "@") && !overrideValidity) {
-			LanteaCraft.getLogger().log(Level.INFO,
-					"You appear to be inside a development environment, no data to push.");
+			LanteaCraft.getLogger().log(Level.INFO, "You appear to be inside a development environment, no data to push.");
 			return;
 		}
 
@@ -72,9 +72,9 @@ public class AnalyticsHelper extends Thread {
 				LanteaCraft.getLogger().log(Level.INFO, "Done submitting anonymous data.");
 				return;
 			} catch (IOException ioex) {
-				LanteaCraft.getLogger().log(Level.WARNING, "The metrics push failed.", ioex);
+				LanteaCraft.getLogger().log(Level.WARN, "The metrics push failed.", ioex);
 			}
-		LanteaCraft.getLogger().log(Level.WARNING, "Failed to push metrics data, maximum tries exceeded!");
+		LanteaCraft.getLogger().log(Level.WARN, "Failed to push metrics data, maximum tries exceeded!");
 	}
 
 	private String pack(String arg, String val) throws UnsupportedEncodingException {

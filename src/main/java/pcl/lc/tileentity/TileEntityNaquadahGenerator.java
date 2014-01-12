@@ -5,8 +5,8 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -37,20 +37,19 @@ public class TileEntityNaquadahGenerator extends PoweredTileEntity implements IF
 		}
 
 		@Override
-		public boolean isInvNameLocalized() {
+		public boolean func_145818_k_() {
 			return false;
 		}
 
 		@Override
-		public String getInvName() {
+		public String func_145825_b() {
 			return "naquadah_generator";
 		}
 	};
 
 	public TileEntityNaquadahGenerator() {
 		super();
-		FilterRule naquadah = new FilterRule(new ItemStack[] { new ItemStack(LanteaCraft.Items.naquadah, 1) }, null,
-				true);
+		FilterRule naquadah = new FilterRule(new ItemStack[] { new ItemStack(LanteaCraft.Items.naquadah, 1) }, null, true);
 		for (int i = 0; i < 4; i++)
 			inventory.setFilterRule(i, naquadah);
 	}
@@ -61,8 +60,8 @@ public class TileEntityNaquadahGenerator extends PoweredTileEntity implements IF
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
+	public void func_145839_a(NBTTagCompound nbt) {
+		super.func_145839_a(nbt);
 		NBTTagCompound tankCompound = nbt.getCompoundTag("tank");
 		if (tankCompound != null)
 			tank.readFromNBT(tankCompound);
@@ -78,7 +77,7 @@ public class TileEntityNaquadahGenerator extends PoweredTileEntity implements IF
 
 	@Override
 	public void updateEntity() {
-		if (!worldObj.isRemote) {
+		if (!field_145850_b.isRemote) {
 			if (!addedToEnergyNet) {
 				MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
 				addedToEnergyNet = true;
@@ -117,13 +116,13 @@ public class TileEntityNaquadahGenerator extends PoweredTileEntity implements IF
 	}
 
 	@Override
-	public void invalidate() {
+	public void func_145843_s() {
 		if (addedToEnergyNet) {
 			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
 			addedToEnergyNet = false;
 			onInventoryChanged();
 		}
-		super.invalidate();
+		super.func_145843_s();
 	}
 
 	@Override
