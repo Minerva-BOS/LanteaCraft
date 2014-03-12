@@ -35,6 +35,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.network.packet.Packet41EntityEffect;
 import net.minecraft.network.packet.Packet43Experience;
 import net.minecraft.network.packet.Packet9Respawn;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
@@ -46,6 +47,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.network.ForgePacket;
+import net.minecraftforge.common.network.packet.DimensionRegisterPacket;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.common.Optional.Method;
@@ -859,6 +863,15 @@ public class TileEntityStargateBase extends TileEntityChunkLoader implements IIn
 		player.dimension = newDimension;
 		WorldServer oldWorld = server.worldServerForDimension(oldDimension);
 		WorldServer newWorld = server.worldServerForDimension(newDimension);
+		
+		/**
+		 * The following is an MCPC+ only fix which was prescribed in
+		 * #mcportcentral.
+		 */
+		Packet250CustomPayload spoof = ForgePacket.makePacketSet(new DimensionRegisterPacket(newDimension,
+				DimensionManager.getProviderType(newDimension)))[0];
+		player.playerNetServerHandler.sendPacketToPlayer(spoof);
+		
 		// System.out.printf("SGBaseTE.transferPlayerToDimension: %s with %s\n",
 		// newWorld, newWorld.getEntityTracker());
 		player.closeScreen();
